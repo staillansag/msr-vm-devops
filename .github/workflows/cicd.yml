@@ -12,13 +12,13 @@ jobs:
 
     - name: Install packages
       run: |
-        for packages in $(cat packages); do
+        for WM_PACKAGE in $(cat packages); do
           /opt/softwareag/wpm/bin/wpm.sh install \
             -u ${{ secrets.GIT_USERNAME }} \
             -p ${{ secrets.GIT_PAT }} \
             -r ${{ vars.GIT_URL }} \
             -d ${{ vars.WM_PATH }} 
-            $package
+            $WM_PACKAGE
         done
 
     - name: Copy application.properties
