@@ -4,11 +4,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  export:
+  install-packages:
     runs-on: msr-vm
     steps:
     - name: Check out repository
       uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Install packages
+      run: |
+        for packages in $(cat packages); do
+          /opt/softwareag/wpm/bin/wpm.sh install \
+            -u ${{ secrets.GIT_USERNAME }} \
+            -p ${{ secrets.GIT_PAT }} \
+            -r ${{ vars.GIT_URL }} \
+            -d ${{ vars.WM_PATH }} 
+            $package
+        done
+
+    - name: Copy application.properties
+      run: |
+        cp application.properties ${{ vars.WM_PATH }}/application.properties
+
+    - name: Get user info
+      run: |
+        id
