@@ -27,7 +27,7 @@ jobs:
 
     - name: Restart the MSR
       run: |
-        curl -u Administrator:${{ secrets.MSR_ADMIN_PASSWORD }} --location --request POST 'http://localhost:5555/admin/server?action=restart' || exit 1
+        curl -u Administrator:${{ secrets.MSR_ADMIN_PASSWORD }} --location --request POST 'http://localhost:5555/admin/server?action=restart&force=true' || exit 1
         sleep 10
 
     - name: Wait for MSR to be ready
