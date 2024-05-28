@@ -7,12 +7,8 @@ jobs:
   export:
     runs-on: msr-vm
     steps:
-    - name: Set Node.js version to use
-      run: |
-        nvm use 14
-
     - name: Check out repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
