@@ -27,7 +27,7 @@ jobs:
 
     - name: Stop and start the MSR
       run: |
-        ${{ vars.WM_PATH }}/bin/shutdown.sh
+        timeout 60s ${{ vars.WM_PATH }}/bin/shutdown.sh
         ${{ vars.WM_PATH }}/bin/startup.sh
 
     - name: Wait for MSR to be ready
