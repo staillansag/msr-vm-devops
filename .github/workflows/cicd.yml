@@ -17,7 +17,7 @@ jobs:
             -u ${{ secrets.GIT_USERNAME }} \
             -p ${{ secrets.GIT_PAT }} \
             -r ${{ vars.GIT_URL }} \
-            -d ${{ vars.WM_PATH }} 
+            -d ${{ vars.WM_PATH }} \
             $WM_PACKAGE
         done
 
