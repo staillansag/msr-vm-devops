@@ -72,6 +72,7 @@ jobs:
 
   test:
     runs-on: msr-vm
+    needs: deploy-packages
     steps:
     - name: Check out repository
       uses: actions/checkout@v4
