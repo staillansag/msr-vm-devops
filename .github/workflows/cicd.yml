@@ -53,7 +53,7 @@ jobs:
 
     - name: Check MSR health
       run: |
-        health_json=$(curl -s http://localhost:5555/health)
+        health_json=$(curl -s -u Administrator:${{ secrets.MSR_ADMIN_PASSWORD }} http://localhost:5555/health)
         if [ -z "${health_json}" ]; then
           echo "Empty response to http://localhost:5555/health" && exit 1
         else
