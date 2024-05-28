@@ -1,0 +1,14 @@
+name: webMethods MSR CI/CD (VM deployment)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: msr-vm
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
