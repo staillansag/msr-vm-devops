@@ -23,8 +23,9 @@ jobs:
 
     - name: Copy application.properties
       run: |
-        cp application.properties ${{ vars.WM_PATH }}/application.properties
+        cp application.properties ${{ vars.WM_PATH }}/application.properties 
 
-    - name: Get user info
+    - name: Stop and start the MSR
       run: |
-        id
+        ${{ vars.WM_PATH }}/bin/shutdown.sh
+        ${{ vars.WM_PATH }}/bin/startup.sh
