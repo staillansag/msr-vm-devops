@@ -83,5 +83,5 @@ jobs:
           newman run $TEST_COLLECTION_FILE  \
             --env-var "url=http://localhost:5555" \
             --env-var "userName=Administrator" \
-            --env-var "password=${{ env.ADMIN_PASSWORD }}"
+            --env-var "password=${{ secrets.MSR_ADMIN_PASSWORD }}"
         done
