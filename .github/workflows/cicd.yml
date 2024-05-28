@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  install-packages:
+  deploy-packages:
     runs-on: msr-vm
     steps:
     - name: Check out repository
@@ -69,3 +69,18 @@ jobs:
           echo "Error: One or more JDBC Adapter connections in MSR are suspended"
           exit 1
         fi
+
+  test:
+    runs-on: msr-vm
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Run API tests
+      run: |
+        for TEST_COLLECTION_FILE in $(ls tests/newman/*.json); do
+          newman run $TEST_COLLECTION_FILE  \
+            --env-var "url=http://localhost:5555" \
+            --env-var "userName=Administrator" \
+            --env-var "password=${{ env.ADMIN_PASSWORD }}"
+        done
