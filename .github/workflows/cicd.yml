@@ -29,3 +29,43 @@ jobs:
       run: |
         ${{ vars.WM_PATH }}/bin/shutdown.sh
         ${{ vars.WM_PATH }}/bin/startup.sh
+
+    - name: Wait for MSR to be ready
+      run: |
+        start_time=$(date +%s)
+        timeout=120 # 2 minutes
+        echo "Checking http://localhost:5555 for MSR readiness"
+        while : ; do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:5555 | grep -q "200"; then
+                echo "MSR is ready"
+                exit 0
+            else
+                current_time=$(date +%s)
+                elapsed=$((current_time - start_time))
+                echo "MSR not ready yet"
+                if [ $elapsed -ge $timeout ]; then
+                    echo "Error - 120 seconds timeout reached"
+                    exit 1
+                fi
+            fi
+            sleep 5
+        done
+
+    - name: Check MSR health
+      run: |
+        health_json=$(curl -s http://localhost:5555/health)
+        if [ -z "${health_json}" ]; then
+          echo "Empty response to http://localhost:5555/health" && exit 1
+        else
+          echo "Health status for MSR"
+          echo ${health_json} | jq
+        fi
+        status_checks=$(echo "$health_json" | jq '. | .. | .status? // empty | select(. != "UP")')
+        if [[ -n "$status_checks" ]]; then
+          echo "Error: One or more resources in MSR are not 'UP'" && exit 1
+        fi
+        jdbc_state_checks=$(echo "$health_json" | jq '.Adapters.JDBCAdapter.Connections[] | select(.state == "suspended")')
+        if [[ -n "$jdbc_state_checks" ]]; then
+          echo "Error: One or more JDBC Adapter connections in MSR are suspended"
+          exit 1
+        fi
