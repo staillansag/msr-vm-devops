@@ -25,11 +25,10 @@ jobs:
       run: |
         cp application.properties ${{ vars.WM_PATH }}/application.properties 
 
-    - name: Stop and start the MSR
+    - name: Restart the MSR
       run: |
-        ${{ vars.WM_PATH }}/bin/shutdown.sh &
-        sleep 30
-        ${{ vars.WM_PATH }}/bin/startup.sh &
+        curl -s -u Administrator:${{ secrets.MSR_ADMIN_PASSWORD }} http://localhost:5555/admin/server?action=restart || exit 1
+        sleep 10
 
     - name: Wait for MSR to be ready
       run: |
