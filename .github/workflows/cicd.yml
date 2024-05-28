@@ -58,7 +58,7 @@ jobs:
           echo "Empty response to http://localhost:5555/health" && exit 1
         else
           echo "Health status for MSR"
-          echo ${health_json} | jq
+          echo ${health_json}
         fi
         status_checks=$(echo "$health_json" | jq '. | .. | .status? // empty | select(. != "UP")')
         if [[ -n "$status_checks" ]]; then
