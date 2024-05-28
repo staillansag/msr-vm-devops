@@ -3,7 +3,7 @@ name: webMethods MSR CI/CD (VM deployment)
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [trigger-workflow]
+    types: [package-change]
 
 jobs:
   deploy-packages:
